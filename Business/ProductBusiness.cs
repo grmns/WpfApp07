@@ -22,5 +22,14 @@ namespace Business
             var allProducts = _productData.GetAllProducts();
             return allProducts.Where(p => p.Name.Contains(name)).ToList();
         }
+        public void InsertProduct(Product product)
+        {
+            _productData.InsertProduct(product);
+        }
+
+        public void DeleteProductLogical(int productID)
+        {
+            _productData.DeleteProductLogical(productID);
+        }
     }
 }

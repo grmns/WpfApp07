@@ -42,5 +42,30 @@ namespace WpfApp07
             dgProducts.ItemsSource = products;
         }
 
+        private void OpenInsertWindowButton_Click(object sender, RoutedEventArgs e)
+        {
+            ProductInsertWindow insertWindow = new ProductInsertWindow();
+            insertWindow.ShowDialog();
+
+            LoadAllProducts();
+        }
+
+        private void DeleteProductButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgProducts.SelectedItem is Product selectedProduct)
+            {
+                if (MessageBox.Show($"¿Estás seguro de que deseas eliminar el producto {selectedProduct.Name}?",
+                                    "Confirmar eliminación", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    _productBusiness.DeleteProductLogical(selectedProduct.ProductId);
+                    MessageBox.Show("Producto eliminado lógicamente.");
+                    LoadAllProducts();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Por favor, selecciona un producto para eliminar.");
+            }
+        }
     }
 }

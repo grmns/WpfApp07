@@ -3,14 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Data
 {
     public class ProductData
     {
+        // Método para obtener todos los productos
         public List<Product> GetAllProducts()
         {
             var products = new List<Product>();
@@ -40,6 +38,37 @@ namespace Data
             }
 
             return products;
+        }
+
+        public void InsertProduct(Product product)
+        {
+            using (SqlConnection connection = new SqlConnection(DbConnection.ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("InsertProduct", connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@Name", product.Name);
+                command.Parameters.AddWithValue("@Price", product.Price);
+                command.Parameters.AddWithValue("@Stock", product.Stock);
+
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
+
+
+        public void DeleteProductLogical(int productID)
+        {
+            using (SqlConnection connection = new SqlConnection(DbConnection.ConnectionString))
+            {
+                SqlCommand command = new SqlCommand("DeleteProductLogical", connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@ProductID", productID);
+
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
         }
     }
 }
